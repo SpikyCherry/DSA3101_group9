@@ -2,7 +2,11 @@ import pandas as pd
 import numpy as np
 import os
 
+# Note: The training and testing files are synthesized and saved separately. You may have to split your entire data set before synthesizing 
+# You may want to split a set for validation or merge the two files and preprocess in training
+
 # Interest rates from 2008/7 to 2010/12, estimated from ECB
+# With the help of GenAI ChatGPT
 rate_table=[
     {"time":"2008/7","MRO": 4.25,"current": 0.75,"three_months": 3.20,"six_months": 3.60,"one_year": 3.85,"two_year": 4.05},
     {"time":"2008/12","MRO": 2.50,"current": 0.40,"three_months": 2.10,"six_months": 2.50,"one_year": 2.75,"two_year": 3.00},
@@ -45,3 +49,4 @@ test[["deposit_amount","term","interest_rate"]]=test["y"].apply(generate_deposit
 
 train.to_csv(train_new_path,index=False)
 test.to_csv(test_new_path,index=False)
+
