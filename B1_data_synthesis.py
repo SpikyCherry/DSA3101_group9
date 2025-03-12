@@ -33,13 +33,12 @@ def generate_deposit_features(y_value):
         return pd.Series([0,0,0])
     
 # Set your own file directory
-file_wd=r"C:\Your_directory"
+file_wd=r"C:your own directory"
 
 # Put the train.csv and test.csv in the same directory also    
 train_path=os.path.join(file_wd,"train.csv")
 test_path=os.path.join(file_wd,"test.csv")
-train_new_path=os.path.join(file_wd,"train_new.csv")
-test_new_path=os.path.join(file_wd,"test_new.csv")
+train_new_path=os.path.join(file_wd,"new_all.csv")
 
 train=pd.read_csv(train_path,sep=";")
 test=pd.read_csv(test_path,sep=";")
