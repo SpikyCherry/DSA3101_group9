@@ -33,12 +33,12 @@ def generate_deposit_features(y_value):
         return pd.Series([0,0,0])
     
 # Set your own file directory
-file_wd=r"C:your own directory"
+file_wd=r"D:\HuaweiMoveData\Users\Francis\Desktop\NUS hw\2425sem2\DSA3101"
 
 # Put the train.csv and test.csv in the same directory also    
 train_path=os.path.join(file_wd,"train.csv")
 test_path=os.path.join(file_wd,"test.csv")
-train_new_path=os.path.join(file_wd,"new_all.csv")
+train_new_path=os.path.join(file_wd,"new_all_final.csv")
 
 train=pd.read_csv(train_path,sep=";")
 test=pd.read_csv(test_path,sep=";")
@@ -46,8 +46,11 @@ test=pd.read_csv(test_path,sep=";")
 train[["deposit_amount","term","interest_rate"]]=train["y"].apply(generate_deposit_features)
 test[["deposit_amount","term","interest_rate"]]=test["y"].apply(generate_deposit_features)
 
-test=test.iloc[1:]
-result=pd.concat([train,test],axis=0)
+# Use oversample to solve the problem of imbalanced data
+train_yes=train[train['y'].str.lower()=='yes']
+train_oversampled=pd.concat([train]+[train_yes]*6,ignore_index=True)
+
+result=pd.concat([train_oversampled,test],axis=0)
 
 result.to_csv(train_new_path,index=False)
 
