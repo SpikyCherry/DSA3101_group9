@@ -22,15 +22,12 @@ deposit_products=["current","three_months","six_months","one_year","two_year"]
 np.random.seed(369)
 
 def generate_deposit_features(y_value):
-    if str(y_value).strip().lower()=="yes":
-        deposit_amount=np.random.choice(np.arange(1000,500000+1,100)) # Deposit range
-        rate_row=np.random.choice(rate_table)
-        deposit_product=np.random.choice(deposit_products)
-        interest_rate=rate_row[deposit_product]
-        deposit_term=deposit_product
-        return pd.Series([deposit_amount,deposit_term,interest_rate])
-    else:
-        return pd.Series([0,0,0])
+    deposit_amount=np.random.choice(np.arange(1000,500000+1,100)) # Deposit range
+    rate_row=np.random.choice(rate_table)
+    deposit_product=np.random.choice(deposit_products)
+    interest_rate=rate_row[deposit_product]
+    deposit_term=deposit_product
+    return pd.Series([deposit_amount,deposit_term,interest_rate])
     
 # Set your own file directory
 file_wd=r"D:\HuaweiMoveData\Users\Francis\Desktop\NUS hw\2425sem2\DSA3101"
@@ -38,7 +35,7 @@ file_wd=r"D:\HuaweiMoveData\Users\Francis\Desktop\NUS hw\2425sem2\DSA3101"
 # Put the train.csv and test.csv in the same directory also    
 train_path=os.path.join(file_wd,"train.csv")
 test_path=os.path.join(file_wd,"test.csv")
-train_new_path=os.path.join(file_wd,"new_all_final.csv")
+train_new_path=os.path.join(file_wd,"final_final.csv")
 
 train=pd.read_csv(train_path,sep=";")
 test=pd.read_csv(test_path,sep=";")
