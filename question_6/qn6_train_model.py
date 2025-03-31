@@ -42,23 +42,6 @@ def load_and_preprocess_data(file_path,prediction=False):
     train_yes=df[df['y']==1]
     df=pd.concat([df]+[train_yes]*6,ignore_index=True)
 
-    # # transform interest_rate,deposut_amount,term and binarize response variable y
-    # if 'interest_rate' in df.columns:
-    #     df['interest_rate']=df['interest_rate'].fillna(0).astype(float)
-    # if 'deposit_amount' in df.columns:
-    #     df['deposit_amount']=df['deposit_amount'].fillna(0).astype(float)
-    # if 'term' in df.columns:
-    #     df['term']=df['term'].fillna(0)
-    # if 'y' in df.columns:
-    #     df['y']=df['y'].map({'yes':1,'no':0})
-    #     df['y']=df['y'].astype(float)
-    
-    # Encode categorical variables. May use other encoding methods, for example for education. Remove age
-    # feature_encoded={'job','marital','education','default','housing','loan','contact','day','month','campaign','pdays','previous','poutcome',"term"}
-    # le=LabelEncoder()
-    # for feature in feature_encoded:
-    #     df[feature]=le.fit_transform(df[feature])
-
     # Labels/Outcomes
     label_y=df['y'].values
     label_term=df['term'].values
@@ -68,23 +51,6 @@ def load_and_preprocess_data(file_path,prediction=False):
     user_feature_cols=['age','job','marital','education','default','balance','housing','loan']
     product_feature_cols=['deposit_amount','interest_rate'] 
     cross_feature_cols=['contact','day','month','duration','campaign','pdays','previous','poutcome']
-    
-    # user_continuous=['age','balance']
-    # product_continuous=['deposit_amount','interest_rate']
-    # cross_continuous=['duration']
-
-    # scaler_user=StandardScaler()
-    # df[user_continuous]=scaler_user.fit_transform(df[user_continuous])
-    
-    # scaler_product=StandardScaler()
-    # df[product_continuous]=scaler_product.fit_transform(df[product_continuous])
-    
-    # scaler_cross=StandardScaler()
-    # df[cross_continuous]=scaler_cross.fit_transform(df[cross_continuous])
-    
-    # user_cat=[col for col in user_feature_cols if col not in user_continuous]
-    # product_cat=[col for col in product_feature_cols if col not in product_continuous]
-    # cross_cat=[col for col in cross_feature_cols if col not in cross_continuous]
     
     user_features=df[user_feature_cols].values
     product_features=df[product_feature_cols].values
@@ -454,7 +420,7 @@ if __name__ == "__main__":
     joblib.dump(final_model, model_path)
     print(f"Model saved to {model_path}")
 
-    # # EXAMPLE OF PREDICTION
+    # EXAMPLE OF PREDICTION
 
     new_data_file='../data/processed/banking_marketing_test_processed.csv'
     df_predictions=predict_new_data(new_data_file)
