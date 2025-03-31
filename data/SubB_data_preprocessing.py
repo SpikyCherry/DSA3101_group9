@@ -49,7 +49,7 @@ if nominal_columns:
 encoder = LabelEncoder()
 for col in nominal_columns:
         banking_marketing_train_encoded[col] = encoder.fit_transform(banking_marketing_train[col])
-        banking_marketing_test_encoded[col] = encoder.fit_transform(banking_marketing_test[col])
+        banking_marketing_test_encoded[col] = encoder.transform(banking_marketing_test[col])
 
 # Ordinal columns (label encoding)
 ordinal_columns = ['education','month']
@@ -59,7 +59,7 @@ if ordinal_columns:
     encoder = LabelEncoder()
     for col in ordinal_columns:
         banking_marketing_train_encoded[col] = encoder.fit_transform(banking_marketing_train[col])
-        banking_marketing_test_encoded[col] = encoder.fit_transform(banking_marketing_test[col])
+        banking_marketing_test_encoded[col] = encoder.transform(banking_marketing_test[col])
 
 deposit_products=["current","three_months","six_months","one_year","two_year"]
 ordinal_encoder = OrdinalEncoder(categories=[deposit_products])
