@@ -363,12 +363,9 @@ if __name__ == "__main__":
     test_loader=torch.utils.data.DataLoader(test_dataset,batch_size=batch_size,shuffle=False)
     
     # Hyperparameters
-    hidden_dim_candidates=[4,8,16]
-    embedding_dim_candidates=[4,8,16]
-    learning_rate_candidates=[0.1,0.05,0.01,0.005,0.001]
-    # hidden_dim_candidates=[16]
-    # embedding_dim_candidates=[16]
-    # learning_rate_candidates=[0.1]
+    hidden_dim_candidates=[16]
+    embedding_dim_candidates=[8]
+    learning_rate_candidates=[0.001]
 
     best_config=None
     best_val_loss=float('inf')
@@ -420,12 +417,12 @@ if __name__ == "__main__":
     joblib.dump(final_model, model_path)
     print(f"Model saved to {model_path}")
 
-    # EXAMPLE OF PREDICTION
+    # # EXAMPLE OF PREDICTION
 
-    new_data_file='../data/processed/banking_marketing_test_processed.csv'
-    df_predictions=predict_new_data(new_data_file)
-    last_four_columns=df_predictions.iloc[:, -4:]
-    print(last_four_columns)
+    # new_data_file='../data/processed/banking_marketing_test_processed.csv'
+    # df_predictions=predict_new_data(new_data_file)
+    # last_four_columns=df_predictions.iloc[:, -4:]
+    # print(last_four_columns)
 
 
 
