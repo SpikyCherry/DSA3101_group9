@@ -37,7 +37,7 @@ A team of 10 data scientists collaborated to explore various supervised and unsu
 ## 🔄 Project Workflow
 
 1. **Data Collection**
-   - Two real-world datasets from Kaggle are used.
+   - Three real-world datasets from Kaggle are used.
    - Synthetic data is generated to augment the dataset where necessary.
 
 2. **Preprocessing**
