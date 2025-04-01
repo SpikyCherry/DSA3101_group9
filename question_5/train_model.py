@@ -15,7 +15,7 @@ from sklearn.tree import DecisionTreeClassifier
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import accuracy_score, classification_report
 
-df_full, df_scaled, df_cleaned=prepare_data("BankChurners.csv")
+df_full, df_scaled, df_cleaned=prepare_data('data/BankChurners.csv')
 cluster_labels=perform_clustering(df_scaled)
 df_scaled['Cluster'] = cluster_labels
 X = df_scaled.drop(columns=['Cluster'])
