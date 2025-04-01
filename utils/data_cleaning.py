@@ -30,7 +30,8 @@ def encode_categorical(
     df: pd.DataFrame,
     label_encode_cols: list = None,
     one_hot_encode_cols: list = None,
-    ordinal_encode_cols: dict = None  # Change to a dictionary to take in orders
+    ordinal_encode_cols: dict = None,
+    binary_encode_cols: dict = None  # Change to a dictionary to take in orders
 ) -> pd.DataFrame:
     """
     Encodes categorical features flexibly based on user input.
@@ -40,6 +41,7 @@ def encode_categorical(
         label_encode_cols (list): Columns to label encode.
         one_hot_encode_cols (list): Columns to one-hot encode.
         ordinal_encode_cols (dict): Columns to ordinal encode with orders (e.g., {'education': ['low', 'medium', 'high']}).
+        binary_encode_cols (dict): Dictionary specifying columns and their mappings for binary encoding.
 
     Returns:
         pd.DataFrame: Encoded DataFrame.
@@ -72,24 +74,7 @@ def encode_categorical(
                 unknown_value=np.nan
             )
             df[ordinal_cols] = oe.fit_transform(df[ordinal_cols].astype(str)).astype(float)
-
-    return df
-
-def encode_binary(df: pd.DataFrame, binary_encode_cols: dict) -> pd.DataFrame:
-    """
-    Encodes binary categorical features based on a provided mapping.
-
-    Parameters:
-        df (pd.DataFrame): Input DataFrame.
-        binary_encode_cols (dict): Dictionary specifying columns and their mappings.
-                                   Example: {'default': {'no': 0, 'yes': 1, np.nan: -1},
-                                             'housing': {'no': 0, 'yes': 1}}
-
-    Returns:
-        pd.DataFrame: Encoded DataFrame.
-    """
-    df = df.copy()
-
+    
     if binary_encode_cols:
         for col, mapping in binary_encode_cols.items():
             if col in df.columns: #prevents errors if the column is not in the dataframe.
