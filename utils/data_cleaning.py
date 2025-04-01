@@ -31,7 +31,7 @@ def encode_categorical(
     label_encode_cols: list = None,
     one_hot_encode_cols: list = None,
     ordinal_encode_cols: dict = None,
-    binary_encode_cols: dict = None  # Change to a dictionary to take in orders
+    binary_encode_cols: dict = None
 ) -> pd.DataFrame:
     """
     Encodes categorical features flexibly based on user input.
@@ -75,6 +75,7 @@ def encode_categorical(
             )
             df[ordinal_cols] = oe.fit_transform(df[ordinal_cols].astype(str)).astype(float)
     
+    # Binary Encoding
     if binary_encode_cols:
         for col, mapping in binary_encode_cols.items():
             if col in df.columns: #prevents errors if the column is not in the dataframe.
