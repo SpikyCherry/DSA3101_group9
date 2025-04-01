@@ -362,7 +362,7 @@ if __name__ == "__main__":
     val_loader=torch.utils.data.DataLoader(val_dataset,batch_size=batch_size,shuffle=False)
     test_loader=torch.utils.data.DataLoader(test_dataset,batch_size=batch_size,shuffle=False)
     
-    # Hyperparameters
+    # Hyperparameters/ See the tutorial.ipynb for the process(grid search), here is the final hyperparamter selection result
     hidden_dim_candidates=[16]
     embedding_dim_candidates=[8]
     learning_rate_candidates=[0.001]
