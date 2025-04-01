@@ -1,6 +1,7 @@
 import os
 import sys
 import pandas as pd
+import numpy as np
 from sklearn.preprocessing import LabelEncoder, OrdinalEncoder
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
@@ -61,3 +62,4 @@ df_scaled.to_csv(output_path_scaled, index=False)
 
 print(f"Encoded data saved to {output_path_encoded}")
 print(f"Scaled data saved to {output_path_scaled}")
+
