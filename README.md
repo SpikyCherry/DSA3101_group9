@@ -102,7 +102,7 @@ The Bank Churn dataset consists of customer information, which is used to predic
 - **Categorical Variables**: `Gender`, `Education_Level`, `Marital_Status`, `Income_Category`, `Card_Category` are categorical variables that may require encoding (e.g., one-hot encoding) before use in machine learning models.
 - The **Income_Category** and **Marital_Status** variables have a category for "Unknown", which may represent missing or unspecified data and could require special handling.
 - There might be imbalances in the target variable `Attrition_Flag`, with fewer customers who churn, so techniques like oversampling or class weighting may be necessary for balanced predictions.
-- 
+
 ---
 
 ## 📝 Reproducibility
