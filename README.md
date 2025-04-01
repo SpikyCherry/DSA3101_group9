@@ -6,34 +6,6 @@ A team of 10 data scientists collaborated to explore various supervised and unsu
 
 ---
 
-## 🌐 Project Overview
-
-### 📌 Business Problem
-Banks are struggling to turn rich customer data into actionable marketing insights. Current strategies lack personalization and fail to fully leverage behavioral, transactional, and demographic data. This project builds machine learning solutions to:
-
-- Segment customers based on behavior and preferences.
-- Predict customer needs to personalize outreach.
-- Optimize marketing campaigns in real-time to improve ROI.
-
-### 🎯 Objectives
-- Create customer segments for targeted marketing.
-- Develop predictive models for engagement and churn.
-- Build systems that adapt campaign strategies based on data insights.
-- Balance cost-effectiveness with personalization in marketing.
-
----
-
-## 👨‍💻 Team Organization
-
-- **Team Size:** 10 Data Scientists
-- **Structure:** One collaborative phase followed by two subgroups:
-  - **Subgroup A:** Focused on customer segmentation and behavior analysis.
-  - **Subgroup B:** Focused on personalization and campaign optimization.
-- Each question is solved independently and documented in its own folder.
-- Contribution clarity is maintained by documenting authorship and individual effort percentages.
-
----
-
 ## 📁 Repository Structure
 
 ```
