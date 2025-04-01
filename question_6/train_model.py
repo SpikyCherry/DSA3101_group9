@@ -366,35 +366,13 @@ if __name__ == "__main__":
     hidden_dim_candidates=[16]
     embedding_dim_candidates=[8]
     learning_rate_candidates=[0.001]
-
-    best_config=None
-    best_val_loss=float('inf')
-    # To find the best combo/config of hyperparameters
-    for hd in hidden_dim_candidates:
-        for ed in embedding_dim_candidates:
-            for lr in learning_rate_candidates:
-                # initialize model
-                user_dim=train_user_feats.shape[1]
-                prod_dim=train_prod_feats.shape[1]
-                cross_dim=train_cross_feats.shape[1]
-                model = ThreeTowerModel(user_dim,prod_dim,cross_dim,hidden_dim=hd,embedding_dim=ed)
-                # Losses
-                # Could test on other loss functions
-                criterion_y=nn.BCELoss() 
-                criterion_term=nn.CrossEntropyLoss() 
-                criterion_ir=nn.MSELoss() 
-                # Optimizer
-                optimizer=optim.Adam(model.parameters(),lr=lr)
-                # training
-                val_loss = train_and_evaluate(model,train_loader,val_loader,criterion_y,criterion_term,criterion_ir,optimizer,num_epochs=3,alpha_y=1.0,alpha_term=1.0,alpha_ir=1.0)
-                
-                if val_loss<best_val_loss:
-                    best_val_loss=val_loss
-                    best_config=(hd,ed,lr)
+    best_config=(16,8,0.001)
+    user_dim=train_user_feats.shape[1]
+    prod_dim=train_prod_feats.shape[1]
+    cross_dim=train_cross_feats.shape[1]
     
     print(f"---Final Hyperparameters: hidden_dim={best_config[0]}, "
-          f"embedding_dim={best_config[1]}, lr={best_config[2]}, "
-          f"ValLoss={best_val_loss:.4f}")
+          f"embedding_dim={best_config[1]}, lr={best_config[2]},")
     # Train again, using best hyperparameters
     best_hidden_dim,best_embedding_dim,best_lr=best_config
     
