@@ -4,7 +4,7 @@ import pandas as pd
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
-from utils.data_cleaning import drop_columns, encode_categorical
+from utils.data_cleaning import drop_columns, encode_categorical, CATEGORY_ORDERS
 
 # Define paths
 input_path = 'data/raw/BankChurners.csv'
@@ -26,7 +26,7 @@ df = encode_categorical(
     df,
     label_encode_cols=['Gender', 'Attrition_Flag'],  # Includes target
     one_hot_encode_cols=['Marital_Status'],
-    ordinal_encode_cols=['Education_Level', 'Income_Category', 'Card_Category']
+    ordinal_encode_cols=CATEGORY_ORDERS
 )
 
 # Save processed file
