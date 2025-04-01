@@ -87,7 +87,7 @@ def prepare_data(file_path):
 
 
 # Load and preprocess the data
-df_full, df_scaled, df_cleaned = prepare_data('BankChurners.csv')
+df_full, df_scaled, df_cleaned = prepare_data('data/BankChurners.csv')
 hc_data_clustered = df_cleaned.copy()
 
 """# Hierarchical Clustering
