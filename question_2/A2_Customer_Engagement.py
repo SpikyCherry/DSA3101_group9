@@ -3,11 +3,11 @@ import numpy as np
 import matplotlib.pyplot as plt
 from IPython.display import display
 import seaborn as sns
-from sklearn.preprocessing import OneHotEncoder, OrdinalEncoder
-from sklearn.tree import DecisionTreeClassifier
+from sklearn.preprocessing import OrdinalEncoder
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score, classification_report
-from sklearn.model_selection import GridSearchCV
+import os
+import joblib
 
 # Read in dataset
 df = pd.read_csv("../data/Bankchurners.csv")
@@ -112,3 +112,12 @@ final_rf_model.fit(X_full_scaled, y_full)
 
 # Model is now fully trained on all available data
 print("Final model trained on full dataset.")
+
+
+### Save the model
+model_dir = '../models'
+os.makedirs(model_dir, exist_ok  = True)
+model_path = os.path.join(model_dir, 'random_forest_model.pkl')
+
+joblib.dump(final_rf_model, model_path)
+print(f"Model saved to {model_path}")
