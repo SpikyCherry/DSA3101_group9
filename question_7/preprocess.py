@@ -18,7 +18,7 @@ from xgboost import XGBClassifier
 from sklearn.metrics import accuracy_score, classification_report
 
 # Load Data (Replace with actual file path if needed)
-df = pd.read_csv("banking_marketing_train_processed.csv")
+df = pd.read_csv("data/processed/banking_marketing_train_processed.csv")
 
 # --------------------------------------------
 # Customer Segmentation
@@ -90,6 +90,6 @@ df['Predicted_Segment'] = xgb.predict(X)
 df['customer_segment'] = df['Predicted_Segment'].map(cluster_mapping)
 
 # Save the entire dataset with segmentation
-df.to_csv("customer_segments_full.csv", index=False)
+df.to_csv("data/processed/Q7_customer_segments_full.csv", index=False)
 
 print("Customer Segmentation Completed & Full Dataset Saved!")
