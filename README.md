@@ -92,6 +92,19 @@ The Bank Churn dataset consists of customer information, which is used to predic
 
 ---
 
+## 📝 Notes
+
+- **Attrition_Flag** is the target variable for this dataset, indicating whether the customer has churned (account closed). The goal is to predict this variable based on the other features.
+- The dataset contains a mixture of **demographic** and **product-related** features:
+  - **Demographic Variables**: `Customer_Age`, `Gender`, `Dependent_Count`, `Education_Level`, `Marital_Status`, `Income_Category` are all categorical or numerical variables describing the customer's personal information.
+  - **Product-Related Variables**: `Card_Category`, `Months_on_book`, `Total_Relationship_Count`, `Credit_Limit`, `Total_Revolving_Bal`, `Avg_Open_To_Buy`, `Total_Trans_Amt`, `Total_Trans_Ct`, `Avg_Utilization_Ratio` are related to the customer's interactions with the bank and credit card usage.
+- **Numerical Variables**: `Customer_Age`, `Dependent_Count`, `Months_on_book`, `Total_Relationship_Count`, `Credit_Limit`, `Total_Revolving_Bal`, `Avg_Open_To_Buy`, `Total_Amt_Chng_Q4_Q1`, `Total_Trans_Amt`, `Total_Trans_Ct`, `Total_Ct_Chng_Q4_Q1`, and `Avg_Utilization_Ratio` are continuous variables that might need normalization or standardization.
+- **Categorical Variables**: `Gender`, `Education_Level`, `Marital_Status`, `Income_Category`, `Card_Category` are categorical variables that may require encoding (e.g., one-hot encoding) before use in machine learning models.
+- The **Income_Category** and **Marital_Status** variables have a category for "Unknown", which may represent missing or unspecified data and could require special handling.
+- There might be imbalances in the target variable `Attrition_Flag`, with fewer customers who churn, so techniques like oversampling or class weighting may be necessary for balanced predictions.
+- 
+---
+
 ## 📝 Reproducibility
 
 To run a specific question:
