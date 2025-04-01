@@ -1,4 +1,4 @@
-from DSA3101_group9.util.subB_data_preprocessing import banking_marketing_train_encoded, banking_marketing_test_encoded
+from DSA3101_group9.data.subB_data_preprocessing import banking_marketing_train_encoded, banking_marketing_test_encoded
 
 import pandas as pd
 import numpy as np
