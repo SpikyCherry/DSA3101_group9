@@ -10,7 +10,7 @@ import os
 import joblib
 
 # Read in dataset
-df = pd.read_csv("../data/Bankchurners.csv")
+df = pd.read_csv("../data/raw/BankChurners.csv")
 
 # Data Processing
 # As suggested by the description in the dataset, we remove the last two columns, as they are model-encoded features.
