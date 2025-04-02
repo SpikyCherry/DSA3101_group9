@@ -74,17 +74,29 @@
 
 ## 📝 Notes
 
-**y(subscription)** is the target variable for this dataset, indicating whether the client subscribed to a term deposit. The goal is to predict this variable based on the other features.
-The dataset contains a mixture of demographic and product-related features:
-**Demographic Variables**: age, education, job, marital are categorical variables that describe the clients.
-Financial Variables: 'default', 'balance', 'housing', 'loan' are continuous variables that might need normalization or standardization.
-**Behaviour Variables**: campaign, contact, poutcome, pdays, previous are categorical variables that may require encoding (e.g., one-hot encoding) before use in machine learning models.
-Numerical variables: age, day, duration, campaign, pdays, previous are discrete and balance is continuous.
-Generated Variables: conversion_rate, fatigue_score, deposit_amount, interest_rate are numerical variables, best_contact_time, term are categorical variables.
-Synthetic variables: 
-deposit_amount: The amount of the term deposit if the customer purchased (y=1). Or the amount of term deposit recommended by the campaign initially, but was rejected(y=0) 
-term: The term of the purchased deposit(y=1) or the initial recommended term(y=0). It has categories "current", "three_months", "six_months", "one_year" and "two_year". They were determined by the real business background when the dataset was collected.
-interest_rate: The interest rate of the purchased deposit(y=1) or the initial interest rate recommended by the campaign, but was rejected(y=0). The values correspond to the term and were determined based on the real business background when the dataset was collected, and the ECB data and reports.
-		
-The job and Marital_Status variables have a category for "Unknown", which may represent missing or unspecified data and could require special handling.
-There might be imbalances in the target variable y(subscription , with fewer customers who churn, so techniques like oversampling or class weighting may be necessary for balanced predictions.
+- **Target Variable:**
+  - `y(subscription)` is the target variable, indicating whether the client subscribed to a term deposit. The goal is to predict this variable based on the other features.
+
+- **Feature Categories:**
+  - **Demographic Variables:**
+    - `age`, `education`, `job`, `marital` are categorical variables that describe the clients.
+  - **Financial Variables:**
+    - `default`, `balance`, `housing`, `loan` are continuous variables that might need normalization or standardization.
+  - **Behaviour Variables:**
+    - `campaign`, `contact`, `poutcome`, `pdays`, `previous` are categorical variables that may require encoding (e.g., one-hot encoding) before use in machine learning models.
+  - **Numerical Variables:**
+    - `age`, `day`, `duration`, `campaign`, `pdays`, `previous` are discrete.
+    - `balance` is continuous.
+  - **Generated Variables:**
+    - `conversion_rate`, `fatigue_score`, `deposit_amount`, `interest_rate` are numerical variables.
+    - `best_contact_time`, `term` are categorical variables.
+
+- **Synthetic Variables:**
+  - **deposit_amount:** The amount of the term deposit if the customer purchased (y=1), or the amount of the recommended term deposit (if rejected, y=0).
+  - **term:** The term of the purchased deposit (y=1) or the initially recommended term (y=0). Categories include "current", "three_months", "six_months", "one_year", and "two_year". These terms were determined based on the real business background when the dataset was collected.
+  - **interest_rate:** The interest rate of the purchased deposit (y=1) or the initially recommended interest rate (y=0). Values correspond to the term and were determined based on real business background and ECB data/reports.
+
+- **Special Considerations:**
+  - The `job` and `marital_status` variables have a category for "Unknown", which may represent missing or unspecified data and could require special handling.
+  - There might be imbalances in the target variable (`y(subscription)`), with fewer customers who churn. Techniques like oversampling or class weighting may be necessary for balanced predictions.
+
