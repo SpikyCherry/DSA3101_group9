@@ -14,7 +14,7 @@ This project uses **two external datasets**, which must be manually downloaded f
       data/raw/
       ```
 
-### 🔗 Dataset 2: Bank_Marketing_Dataset
+### 🔗 Dataset 2: Bank Churn Prediction
 - **Kaggle Source:** [Bank_Marketing_Dataset](https://www.kaggle.com/datasets/pkdarabi/bank-marketing-dataset)
 - **Download Instructions:**
    1. Go to the Kaggle link above.
@@ -34,7 +34,7 @@ This project uses **two external datasets**, which must be manually downloaded f
       data/raw/
       ```
 
-> ✅ **Note:** You do not need to rename the files. Unzip when necessary. Ensure the raw data is correctly placed in `data/raw/`.
+> ✅ **Note:** You do not need to unzip or rename the files. Just ensure the raw data is correctly placed in `data/raw/`.
 
 ---
 
@@ -61,7 +61,7 @@ python data/bank_marketing_data_preprocess.py --output ./data/processed/
 data/
 ├── raw/                      # Manually downloaded Kaggle datasets
 ├── processed/                # Preprocessed datasets saved by question_x/preprocess.py
-├── generate_synthetic_data.py  # Script to create synthetic data
+├── bank_marketing_data_preprocess.py  # Script to create synthetic data
 └── data_dictionary.md        # Description of all variables in datasets
 ```
 
