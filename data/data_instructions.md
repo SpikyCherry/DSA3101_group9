@@ -9,12 +9,22 @@ This project uses **two external datasets**, which must be manually downloaded f
 - **Download Instructions:**
    1. Go to the Kaggle link above.
    2. Download the CSV files manually.
-   3. Place them in:
+   3. Save them in:
       ```
       data/raw/
       ```
 
-### 🔗 Dataset 2: Banking Marketing Targets
+### 🔗 Dataset 2: Bank Churn Prediction
+- **Kaggle Source:** [Bank_Marketing_Dataset](https://www.kaggle.com/datasets/pkdarabi/bank-marketing-dataset)
+- **Download Instructions:**
+   1. Go to the Kaggle link above.
+   2. Download the CSV files manually.
+   3. Save them in:
+      ```
+      data/raw/
+      ```
+
+### 🔗 Dataset 3: Banking Marketing Targets
 - **Kaggle Source:** [Banking Dataset - Marketing Targets](https://www.kaggle.com/datasets/prakharrathi25/banking-dataset-marketing-targets)
 - **Download Instructions:**
    1. Navigate to the dataset page.
