@@ -45,13 +45,13 @@ Some parts of the project require synthetic datasets, especially for questions t
 ### ⚙️ Generate Synthetic Data
 Run the following command from the root of the repository:
 ```bash
-python data/generate_synthetic_data.py --output ./data/synthesized/
+python data/bank_marketing_data_preprocess.py --output ./data/processed/
 ```
 
 - This script outputs synthetic datasets used in various tasks.
 - Make sure the outputs appear in:
   ```
-  data/synthesized/
+  data/processed/
   ```
 
 ---
@@ -60,7 +60,6 @@ python data/generate_synthetic_data.py --output ./data/synthesized/
 ```
 data/
 ├── raw/                      # Manually downloaded Kaggle datasets
-├── synthesized/              # Synthesized datasets saved here
 ├── processed/                # Preprocessed datasets saved by question_x/preprocess.py
 ├── generate_synthetic_data.py  # Script to create synthetic data
 └── data_dictionary.md        # Description of all variables in datasets
@@ -69,10 +68,15 @@ data/
 ---
 
 ## 4. Next Steps
-After placing the datasets in the correct folders, proceed with the question-specific preprocessing scripts:
+After placing the datasets in the correct folders, proceed with the question-specific preprocessing scripts, for questions 1-5 and 10:
 ```bash
 cd question_1/
 python preprocess.py
+```
+For questions 6-9:
+```bash
+cd question_6/
+python train_model.py
 ```
 
 Preprocessed outputs will be saved in `data/processed/` and used by each question's modeling pipeline.
