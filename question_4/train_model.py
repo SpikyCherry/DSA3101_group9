@@ -1,5 +1,8 @@
 import pandas as pd
-from sklearn.model_selection import RandomizedSearchCV
+import sys
+import os
+import joblib
+from sklearn.model_selection import RandomizedSearchCV, train_test_split
 from sklearn.preprocessing import StandardScaler
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import accuracy_score, classification_report, roc_auc_score
@@ -122,4 +125,49 @@ def train_and_evaluate_random_forest(best_rf: RandomForestClassifier, X_train: p
     print(f"Cross-Validation Accuracy: {cv_scores.mean():.3f}")
 
     return y_pred, y_proba, cv_scores.mean()
-    
+
+
+current_dir = os.getcwd()
+parent_dir = os.path.dirname(current_dir)
+sys.path.append(parent_dir)
+
+encoded_path = os.path.join(parent_dir,  "data/processed/bank_customers_train_encoded.csv")
+df_encoded = pd.read_csv(encoded_path)
+scaled_path = os.path.join(parent_dir,  "data/processed/bank_customers_train_scaled.csv")
+df_scaled = pd.read_csv(scaled_path)
+
+X = df_encoded.drop(columns=['y'])  # Features
+y = df_encoded['y']  # Target
+
+# Train-Test Split
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+# Feature Scaling (Logistic Regression works better with normalized data)
+scaler = StandardScaler()
+X_train = scaler.fit_transform(X_train)
+X_test = scaler.transform(X_test)
+
+# 4. Find the best Logistic Regression model parameters
+best_model_LR = find_best_logistic_regression_params(X_train, y_train)
+
+# 5. Train and evaluate the model
+y_test_result, y_pred = train_and_evaluate_logistic_regression(best_model_LR, X_train, y_train, X_test, y_test)
+
+# === Save model ===
+model_dir = '../models/question_4'
+os.makedirs(model_dir, exist_ok=True)
+model_path = os.path.join(model_dir, 'logistic_regression_model.pkl')
+
+joblib.dump(best_model_LR, model_path)
+print(f"Model saved to {model_path}")
+
+best_rf = find_best_random_forest_params(X_train, y_train)
+y_pred, y_proba, cv_accuracy = train_and_evaluate_random_forest(best_rf, X_train, y_train, X_test, y_test)
+
+# === Save model ===
+model_dir = '../models/question_4'
+model_rf_path = os.path.join(model_dir, 'random_forest_model.pkl')
+
+joblib.dump(best_rf, model_rf_path)
+print(f"Model saved to {model_rf_path}")
+
