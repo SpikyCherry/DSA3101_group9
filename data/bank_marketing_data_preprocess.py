@@ -155,7 +155,7 @@ banking_marketing_test_encoded['customer_lifespan'] = (69 - banking_marketing_tr
 banking_marketing_train_encoded['CLV'] = banking_marketing_train_encoded['purchase_frequency'] * banking_marketing_train_encoded['customer_lifespan'] * banking_marketing_train_encoded['revenue']
 banking_marketing_test_encoded['CLV'] = (banking_marketing_test_encoded['purchase_frequency'] * banking_marketing_test_encoded['customer_lifespan'] * banking_marketing_test_encoded['revenue'])
 
-# CAC = total costs / number of new customers gained within a specific period
+# Customer Aquisition Cost (CAC) = total costs / number of new customers gained within a specific period
 ## new_customer
 def is_new_customer(row):
     return row['poutcome'] != 'success' and row['y'] == 1
