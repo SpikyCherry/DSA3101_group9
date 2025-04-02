@@ -391,7 +391,7 @@ if __name__ == "__main__":
     # Save model 
     model_dir = '../models'
     os.makedirs(model_dir, exist_ok=True)
-    model_path = os.path.join(model_dir, 'B1_model.pkl')
+    model_path = os.path.join(model_dir, 'question_6.pkl')
     joblib.dump(final_model, model_path)
     print(f"Model saved to {model_path}")
 
