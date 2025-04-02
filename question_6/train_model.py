@@ -36,7 +36,8 @@ def load_and_preprocess_data(file_path,prediction=False):
         labels: numpy array, label/outcome
     """
     # Read the data in csv
-    df=pd.read_csv(file_path)
+    
+    df=pd.read_csv(file_path, delimiter=';', quotechar='"', encoding='utf-8')
 
     #Use oversample to solve the problem of imbalanced data
     train_yes=df[df['y']==1]
@@ -323,9 +324,13 @@ def predict_new_data(file_path):
 
 if __name__ == "__main__":
     # 1. Data loading and preprocessing
-    os.chdir(os.path.dirname(os.path.abspath(__file__)))
-    data_file ='../data/processed/banking_marketing_train_processed.csv'
+ 
+    sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+    # === Load preprocessed dataset ===
+    data_file='data/processed/banking_marketing_train_processed.csv'
     user_feats,product_feats,cross_feats,label_y,label_term,label_ir=load_and_preprocess_data(data_file)
+
+
     # 2. Dataset segmentation
     (X_user_train,X_user_val,X_user_test,X_product_train,X_product_val, X_product_test,X_cross_train,X_cross_val,X_cross_test,y_train,y_val,y_test,
      term_train,term_val,term_test,ir_train,ir_val,ir_test)=split_train_val_test(user_feats, product_feats, cross_feats,label_y,label_term,label_ir, 
@@ -391,13 +396,13 @@ if __name__ == "__main__":
     # Save model 
     model_dir = '../models'
     os.makedirs(model_dir, exist_ok=True)
-    model_path = os.path.join(model_dir, 'question_6.pkl')
+    model_path = os.path.join(model_dir, 'B1_model.pkl')
     joblib.dump(final_model, model_path)
     print(f"Model saved to {model_path}")
 
     # # EXAMPLE OF PREDICTION
 
-    # new_data_file='../data/processed/banking_marketing_test_processed.csv'
+    # new_data_file='data/processed/banking_marketing_test_processed.csv'
     # df_predictions=predict_new_data(new_data_file)
     # last_four_columns=df_predictions.iloc[:, -4:]
     # print(last_four_columns)
