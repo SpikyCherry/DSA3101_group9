@@ -3,6 +3,7 @@ import numpy as np
 from scipy.stats import beta
 
 # Load segmented customer dataset
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 df = pd.read_csv("data/processed/Q7_banking_marketing_train_segmented.csv")
 
 # --------------------------------------------
