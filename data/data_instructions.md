@@ -45,10 +45,10 @@ Some parts of the project require synthetic datasets, especially for questions t
 ### ⚙️ Generate Synthetic Data
 Run the following command from the root of the repository:
 ```bash
-python data/bank_marketing_data_preprocess.py --output ./data/processed/
+python data/bank_marketing_data_preprocess.py
 ```
 
-- This script outputs synthetic datasets used in various tasks.
+- This script involves synthesis of new features and preprocessing of the dataset, Banking Dataset - Marketing Targets.
 - Make sure the outputs appear in:
   ```
   data/processed/
@@ -66,18 +66,4 @@ data/
 └── data_instructions.md               # Instructions of how to download, synthesize and preprocess data 
 ```
 
----
 
-## 4. Next Steps
-After placing the datasets in the correct folders, proceed with the question-specific preprocessing scripts, for questions 1-5 and 10:
-```bash
-cd question_1/
-python preprocess.py
-```
-For questions 6-9:
-```bash
-cd question_6/
-python train_model.py
-```
-
-Preprocessed outputs will be saved in `data/processed/` and used by each question's modeling pipeline.
