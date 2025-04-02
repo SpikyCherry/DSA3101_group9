@@ -1,107 +1,117 @@
 import pandas as pd
 import numpy as np
-from scipy.stats import beta  # Explicitly importing beta
+from scipy.stats import beta
 
-# Load the segmented customer dataset
-df = pd.read_csv("data/processed/Q7_customer_segments_full.csv")
-
-# --------------------------------------------
-# MAB Model with Customer Segmentation
-# --------------------------------------------
-
-np.random.seed(42)
-
-# Simulated data: 60 days of conversion data for treatment and control groups
-n_days = 60
-treatment_group = np.random.normal(loc=1.12, scale=0.02, size=n_days)  # Slightly higher mean
-control_group = np.random.normal(loc=1.10, scale=0.02, size=n_days)   # Lower mean
-
-# DataFrame to store results
-results = pd.DataFrame({
-    "day": np.arange(n_days),
-    "treatment_mean": treatment_group,
-    "control_mean": control_group
-})
-
-# Bootstrap resampling for statistical significance
-n_iterations = 10000
-diff_means = []
-
-for _ in range(n_iterations):
-    sample_treatment = np.random.choice(treatment_group, size=len(treatment_group), replace=True)
-    sample_control = np.random.choice(control_group, size=len(control_group), replace=True)
-    diff_means.append(np.mean(sample_treatment) - np.mean(sample_control))
-
-# Compute 95% Confidence Interval
-ci_lower, ci_upper = np.percentile(diff_means, [2.5, 97.5])
-print(f"95% Confidence Interval for Difference in Means: [{ci_lower}, {ci_upper}]")
+# Load segmented customer dataset
+df = pd.read_csv("data/processed/Q7_banking_marketing_train_segmented.csv")
 
 # --------------------------------------------
-# IMPROVED REWARD FUNCTION WITH SEGMENTATION
+# Define Banking Campaign Variants
 # --------------------------------------------
+campaign_variants = [
+    "New Account Bonus",
+    "Spend-to-Earn Rewards",
+    "Free Banking Services",
+    "Loyalty Rewards Program"
+]
+timing_variants = ["Morning", "Afternoon", "Evening"]
+channel_variants = ["Email", "SMS", "Push Notification"]
 
-alpha_reward, beta_reward, gamma_reward = 1.0, 0.5, 0.3  # Rename beta to avoid conflict
-
-def calculate_reward(conversion_rate, clv, fatigue_score):
-    return (alpha_reward * conversion_rate) + (beta_reward * clv) - (gamma_reward * fatigue_score)
-
-# Add segmentation data (Assume segment-based CLV and fatigue adjustments)
-segment_clv_mapping = {
-    "Mid-High Income Males with Dependents, Strong Banking Relationship": 180,
-    "Young, Low-Income Females with Shortest Tenure & Low Credit": 50,
-    "Older, Low-Income Females with Strong Banking Relationship & High Utilisation": 120,
-    "Mid-Income Graduates with High Spending & Transactions": 150,
-    "Educated, Single Individuals with High Credit & Low Utilisation": 130
-}
-
-segment_fatigue_mapping = {
-    "Mid-High Income Males with Dependents, Strong Banking Relationship": 0.8,
-    "Young, Low-Income Females with Shortest Tenure & Low Credit": 1.5,
-    "Older, Low-Income Females with Strong Banking Relationship & High Utilisation": 1.2,
-    "Mid-Income Graduates with High Spending & Transactions": 1.0,
-    "Educated, Single Individuals with High Credit & Low Utilisation": 0.9
-}
-
-# Assign CLV & Fatigue based on customer segment
-df["clv"] = df["customer_segment"].map(segment_clv_mapping)
-df["fatigue_score"] = df["customer_segment"].map(segment_fatigue_mapping)
-
-# Simulated conversion rates per segment
-df["conversion_rate"] = np.random.uniform(0.01, 0.3, size=len(df))
-
-# Compute rewards for each customer
-df["reward"] = calculate_reward(df["conversion_rate"], df["clv"], df["fatigue_score"])
-
-# --------------------------------------------
-# BAYESIAN THOMPSON SAMPLING (MAB) BY SEGMENT
-# --------------------------------------------
-
+# Initialize parameters for Thompson Sampling (Success/Failure for each campaign)
 segment_list = df["customer_segment"].unique()
 
-# Initialize success/failure counts for each segment
-segment_params = {segment: {"alpha_treatment": 1, "beta_treatment": 1, "alpha_control": 1, "beta_control": 1} for segment in segment_list}
+# Bayesian Priors for Each Segment
+historical_performance = df.groupby("customer_segment")["conversion_binary"].mean()
+segment_campaign_params = {
+    segment: {
+        variant: {
+            "alpha": max(1, historical_performance[segment] * 10),  
+            "beta": max(1, (1 - historical_performance[segment]) * 10)
+        } for variant in campaign_variants
+    }
+    for segment in segment_list
+}
 
-for _ in range(1000):  # Simulate 1000 rounds
-    for segment in segment_list:
-        # Sample from Beta distributions (correct usage)
-        treatment_sample = beta.rvs(segment_params[segment]["alpha_treatment"], segment_params[segment]["beta_treatment"])
-        control_sample = beta.rvs(segment_params[segment]["alpha_control"], segment_params[segment]["beta_control"])
+segment_timing_params = {
+    segment: {variant: {"alpha": 1, "beta": 1} for variant in timing_variants}
+    for segment in segment_list
+}
+segment_channel_params = {
+    segment: {variant: {"alpha": 1, "beta": 1} for variant in channel_variants}
+    for segment in segment_list
+}
 
-        if treatment_sample > control_sample:
-            # Choose treatment group (MAB)
-            segment_params[segment]["alpha_treatment"] += 1  # Increase success count
-        else:
-            # Choose control group (Rule-based)
-            segment_params[segment]["beta_control"] += 1  # Increase failure count
+# --------------------------------------------
+# Define Dynamic Fatigue Score Handling
+# --------------------------------------------
+low_fatigue_threshold = df["fatigue_score"].quantile(0.33)  
+high_fatigue_threshold = df["fatigue_score"].quantile(0.66)  
 
-# Convert to DataFrame for final results
-segment_results = pd.DataFrame(segment_params).T
-segment_results["Success_Rate_Treatment"] = segment_results["alpha_treatment"] / (segment_results["alpha_treatment"] + segment_results["beta_treatment"])
-segment_results["Success_Rate_Control"] = segment_results["alpha_control"] / (segment_results["alpha_control"] + segment_results["beta_control"])
+# --------------------------------------------
+# Function to Recommend the Best Campaign for Each Customer
+# --------------------------------------------
+def recommend_campaign(customer):
+    """
+    Selects the best campaign, timing, and channel based on:
+    - Thompson Sampling with Bayesian Updating
+    - Dynamic Fatigue Handling
+    - Minimum Subscription Rate Floor
+    """
 
-print("\nFinal Success Rates per Segment:")
-print(segment_results)
+    customer_segment = customer["customer_segment"]
+    fatigue_score = customer["fatigue_score"]
+    conversion_rate = max(customer["conversion_rate"], 0.01)  
+    best_contact_time = customer["best_contact_time"]
 
-# Save results
-df.to_csv("data/processed/Q7_customer_segments_with_rewards.csv", index=False)
-print("MAB Model with Customer Segmentation Completed & Saved!")
+    # Dynamically categorize fatigue levels
+    if fatigue_score <= low_fatigue_threshold:
+        fatigue_level = "low"
+    elif fatigue_score >= high_fatigue_threshold:
+        fatigue_level = "high"
+    else:
+        fatigue_level = "medium"
+
+    # Adjust campaign selection using fatigue score dynamically
+    adjusted_campaigns = campaign_variants.copy()
+    if fatigue_level == "high":  
+        adjusted_campaigns.remove("Spend-to-Earn Rewards")  
+    elif fatigue_level == "low":
+        adjusted_campaigns.append("New Account Bonus")  
+
+    # Sample from Beta distributions for campaign selection
+    best_campaign = max(
+        adjusted_campaigns, key=lambda x: beta.rvs(
+            max(segment_campaign_params[customer_segment][x]["alpha"] + conversion_rate * 10, 1),  
+            max(segment_campaign_params[customer_segment][x]["beta"] + 5, 1)  # Small smoothing term
+        )
+    )
+
+    # Select best timing based on past engagement
+    if best_contact_time in timing_variants:
+        best_timing = best_contact_time  
+    else:
+        best_timing = max(
+            timing_variants, key=lambda x: beta.rvs(
+                max(segment_timing_params[customer_segment][x]["alpha"], 1),
+                max(segment_timing_params[customer_segment][x]["beta"], 1)
+            )
+        )
+
+    # Sample from Beta distributions for channel selection
+    best_channel = max(
+        channel_variants, key=lambda x: beta.rvs(
+            max(segment_channel_params[customer_segment][x]["alpha"], 1),
+            max(segment_channel_params[customer_segment][x]["beta"], 1)
+        )
+    )
+
+    return best_campaign, best_timing, best_channel
+
+# --------------------------------------------
+# Generate Recommendations for Each Customer
+# --------------------------------------------
+df[["recommended_campaign", "recommended_timing", "recommended_channel"]] = df.apply(recommend_campaign, axis=1, result_type="expand")
+
+# Save recommendations
+df.to_csv("data/processed/Q7_customer_campaign_recommendations_final.csv", index=False)
+print("Final Optimized Banking Campaign Recommendations Generated & Saved!")
