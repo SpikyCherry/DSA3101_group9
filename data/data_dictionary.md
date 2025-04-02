@@ -35,8 +35,55 @@
 - The **Income_Category** and **Marital_Status** variables have a category for "Unknown", which may represent missing or unspecified data and could require special handling.
 - There might be imbalances in the target variable `Attrition_Flag`, with fewer customers who churn, so techniques like oversampling or class weighting may be necessary for balanced predictions.
 
+# 📘 Data Dictionary 2: Bank Marketing Dataset
 
-# 📘 Data Dictionary 2: Banking Dataset - Marketing Targets
+| **Field Name**        | **Data Type**          | **Description**                                                                                              | **Example**                                                                 |
+|-----------------------|------------------------|--------------------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------|
+| age                   | Integer                | Age of the customer                                                                                           | 35                                                                          |
+| job                   | String (Categorical)   | Type of job                                                                                                  | "admin.", "blue-collar", "technician", "management", "retired", "student" |
+| marital               | String (Categorical)   | Marital status                                                                                               | "married", "single", "divorced"                                            |
+| education             | String (Categorical)   | Education level                                                                                              | "university.degree", "basic.4y", "basic.6y", "basic.9y"                    |
+| default               | Binary                 | Has credit in default?                                                                                       | "yes", "no"                                                                |
+| housing               | Binary                 | Has housing loan?                                                                                            | "yes", "no"                                                                |
+| loan                  | Binary                 | Has personal loan?                                                                                           | "yes", "no"                                                                |
+| contact               | String (Categorical)   | Contact communication type                                                                                   | "cellular", "telephone"                                                    |
+| month                 | String (Categorical)   | Last contact month of the year                                                                               | "jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dec" |
+| day_of_week           | String (Categorical)   | Last contact day of the week                                                                                | "monday", "tuesday", "wednesday", "thursday", "friday"                  |
+| duration              | Integer                | Last contact duration, in seconds                                                                           | 120                                                                         |
+| campaign              | Integer                | Number of contacts performed during this campaign for this client                                           | 3                                                                           |
+| pdays                 | Integer                | Number of days since last contact in a previous campaign (-1 or 999 means never contacted)                  | 999                                                                         |
+| previous              | Integer                | Number of contacts performed before this campaign for this client                                           | 2                                                                           |
+| poutcome              | String (Categorical)   | Outcome of the previous marketing campaign                                                                  | "failure", "success", "nonexistent"                                  |
+| emp.var.rate          | Float                  | Employment variation rate (quarterly)                                                                       | -1.8                                                                        |
+| cons.price.idx        | Float                  | Consumer price index (monthly)                                                                              | 93.918                                                                      |
+| cons.conf.idx         | Float                  | Consumer confidence index (monthly)                                                                         | -40.0                                                                       |
+| euribor3m             | Float                  | 3-month Euribor rate                                                                                        | 0.706                                                                        |
+| nr.employed           | Float                  | Number of employees (quarterly)                                                                             | 5017.5                                                                      |
+| y                     | Binary                 | Has the client subscribed to a term deposit?                                                                | "yes", "no"                                                                |
+
+## 📝 Notes
+
+### **Target Variable:**
+- `y (subscription)` is the target variable, indicating whether the client subscribed to a term deposit. The goal is to predict this variable based on other features.
+
+### **Feature Categories:**
+- **Demographic Variables:**
+  - `age`, `job`, `marital`, `education`
+- **Financial Variables:**
+  - `default`, `housing`, `loan`
+- **Behavioral Variables:**
+  - `campaign`, `contact`, `poutcome`, `pdays`, `previous`
+- **Economic Variables:**
+  - `emp.var.rate`, `cons.price.idx`, `cons.conf.idx`, `euribor3m`, `nr.employed`
+- **Numerical Variables:**
+  - `age`, `duration`, `campaign`, `pdays`, `previous`
+
+### **Special Considerations:**
+- `pdays = 999` means the customer has never been contacted before.
+- `poutcome` may have missing values labeled as "nonexistent" that need special handling.
+- There may be class imbalance in the target variable (`y`), requiring techniques like oversampling or weighting.
+
+# 📘 Data Dictionary 3: Banking Dataset - Marketing Targets
 | **Field Name**         | **Data Type**          | **Description**                                                                                              | **Example**                                                                                                     |
 |------------------------|------------------------|--------------------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------|
 | age                    | Integer                | Age of the customer                                                                                           | 30                                                                                                              |
