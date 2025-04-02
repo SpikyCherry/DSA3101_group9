@@ -2,9 +2,11 @@
 """
 # Importing Packages & Files
 """
-
+import os
+import sys
 import pandas as pd
 import numpy as np
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
 from sklearn.preprocessing import StandardScaler
 from sklearn.preprocessing import LabelEncoder
@@ -87,15 +89,9 @@ def prepare_data(file_path):
 
 
 # Load and preprocess the data
-df_full, df_scaled, df_cleaned = prepare_data('data/BankChurners.csv')
+df_full, df_scaled, df_cleaned = prepare_data('data/raw/BankChurners.csv')
 hc_data_clustered = df_cleaned.copy()
 
-"""# Hierarchical Clustering
-
-## Modelling
-
-### Plotting Dendrogram
-"""
 
 def perform_clustering(data, n_clusters=5):
     """
@@ -117,3 +113,10 @@ def perform_clustering(data, n_clusters=5):
     clusters = hc.fit_predict(data)
 
     return clusters
+
+df_full, df_scaled, df_cleaned=prepare_data('data/raw/BankChurners.csv')
+cluster_labels=perform_clustering(df_scaled)
+df_scaled['Cluster'] = cluster_labels
+os.makedirs('data/processed', exist_ok=True)
+output_path = 'data/processed/BankChurners_clustered.csv'
+df_scaled.to_csv(output_path, index=False)
