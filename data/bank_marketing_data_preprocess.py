@@ -1,13 +1,14 @@
 import pandas as pd
 import numpy as np
 import os
+import sys
 from sklearn.preprocessing import LabelEncoder, StandardScaler, OrdinalEncoder
 
 # set seed
 np.random.seed(369)
 
 # Set working directory
-os.chdir(os.path.dirname(os.path.abspath(__file__)))
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
 # import data
 banking_marketing_train = pd.read_csv('data/raw/banking_marketing_train.csv', delimiter=';', quotechar='"')
@@ -195,10 +196,6 @@ for col in nominal_columns:
 banking_marketing_train_encoded_eda = banking_marketing_train_encoded.copy()
 banking_marketing_test_encoded_eda = banking_marketing_test_encoded.copy()
 
-def get_eda_data():
-    return banking_marketing_train_encoded_eda, banking_marketing_test_encoded_eda
-
-
 # ===========================
 # Data Normalization
 # ===========================
@@ -225,11 +222,7 @@ banking_marketing_test_encoded['fatigue_score'] = scaler.transform(banking_marke
 # ===========================
 # Save Processed Data
 # ===========================
-banking_marketing_train_encoded.to_csv('data/processed/banking_marketing_train_processed.csv', index=False)
-banking_marketing_test_encoded.to_csv('data/processed/banking_marketing_test_processed.csv', index=False)
-
-# preprocessing.py
-def get_preprocessed_data():
-    return banking_marketing_train_encoded, banking_marketing_test_encoded
-
+banking_marketing_train_encoded.to_csv('data/processed/banking_marketing_train_processed.csv', index=False, sep=';', quotechar='"', encoding='utf-8')
+banking_marketing_test_encoded.to_csv('data/processed/banking_marketing_test_processed.csv', index=False, sep=';', quotechar='"', encoding='utf-8')
+banking_marketing_train_encoded_eda.to_csv('data/processed/banking_marketing_train_encoded_eda.csv', index=False, sep=';', quotechar='"', encoding='utf-8')
 

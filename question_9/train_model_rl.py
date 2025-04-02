@@ -1,13 +1,20 @@
 import numpy as np
+import pandas as pd
 import random
 import torch
 import torch.nn as nn
 import torch.optim as optim
 import torch.nn.functional as F
 from collections import deque
-from preprocess import banking_marketing_train_encoded, banking_marketing_test_encoded
+import os
+import sys
 
 # import data
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+
+banking_marketing_train_encoded = pd.read_csv('data/processed/banking_marketing_train_processed.csv', delimiter=';', quotechar='"', encoding='utf-8')
+banking_marketing_test_encoded = pd.read_csv('data/processed/banking_marketing_test_processed.csv', delimiter=';', quotechar='"', encoding='utf-8')
+
 banking_marketing_train_rl = banking_marketing_train_encoded
 banking_marketing_test_rl = banking_marketing_test_encoded
 
