@@ -19,8 +19,6 @@ A team of 10 data scientists collaborated to explore various supervised and unsu
 │
 ├── utils/                        # Shared functions (e.g., encoding)
 │
-├── models/                       # Trained models saved per question
-│
 ├── EDA/                          # Exploratory notebooks for global understanding
 │
 ├── question_x/
@@ -43,7 +41,7 @@ A team of 10 data scientists collaborated to explore various supervised and unsu
 
 3. **Modeling**
    - Each question runs a separate training pipeline using their preprocessed dataset.
-   - Trained models are saved under `models/question_x/`.
+   - Models are trained in train_model.py of their respective question folder and saved under `models/question_x/` once completed.
 
 4. **Notebook Reporting**
    - Each `analysis.ipynb` provides an end-to-end record: data exploration, model comparisons, visualization, and insights.
