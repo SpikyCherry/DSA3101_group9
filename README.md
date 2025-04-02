@@ -67,7 +67,7 @@ Please follow these documents **before running any scripts**.
 To run a specific question:
 
 ```bash
-python question_x/preprocess.py
+python question_x/preprocess.py  # if available
 python question_x/train_model.py
 # or open question_x/analysis.ipynb
 ```
