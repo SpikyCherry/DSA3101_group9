@@ -38,10 +38,10 @@ def prepare_data(file_path):
     df = pd.read_csv(file_path)
 
     # Drop unnecessary columns
-    df.drop([
+    '''df.drop([
         'Naive_Bayes_Classifier_Attrition_Flag_Card_Category_Contacts_Count_12_mon_Dependent_count_Education_Level_Months_Inactive_12_mon_1',
         'Naive_Bayes_Classifier_Attrition_Flag_Card_Category_Contacts_Count_12_mon_Dependent_count_Education_Level_Months_Inactive_12_mon_2'
-    ], axis=1, inplace=True)
+    ], axis=1, inplace=True)'''
 
     df_full = df.copy()
 
