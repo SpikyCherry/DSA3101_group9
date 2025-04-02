@@ -29,7 +29,7 @@ A team of 10 data scientists collaborated to explore various supervised and unsu
 ├── question_x/
 │   ├── preprocess.py             # Load and clean data for this question
 │   ├── train_model.py            # Final model implementation
-│   └── analysis.ipynb            # Full workflow: EDA, training, visualization
+│   └── analysis.ipynb            # Experiement of models and visualization of results
 ```
 
 ---
