@@ -12,6 +12,9 @@ from imblearn.over_sampling import SMOTE
 # --------------------------------------------
 # Load Data
 # --------------------------------------------
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+
+banking_marketing_train_encoded = pd.read_csv('data/processed/banking_marketing_train_processed.csv', delimiter=';', quotechar='"', encoding='utf-8')
 df = banking_marketing_train_encoded.copy()
 
 # --------------------------------------------
