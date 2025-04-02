@@ -8,16 +8,18 @@ Original file is located at
 """
 
 import os
+import sys
 import joblib
 from preprocess import prepare_data,perform_clustering
 from sklearn.model_selection import train_test_split
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import accuracy_score, classification_report
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
-df_full, df_scaled, df_cleaned=prepare_data('data/BankChurners.csv')
-cluster_labels=perform_clustering(df_scaled)
-df_scaled['Cluster'] = cluster_labels
+# === Load preprocessed dataset ===
+data_path = 'data/processed/BankChurners_clustered.csv'
+df_scaled=prepare_data(data_path)
 X = df_scaled.drop(columns=['Cluster'])
 y = df_scaled['Cluster']
 
