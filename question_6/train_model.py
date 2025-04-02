@@ -394,12 +394,10 @@ if __name__ == "__main__":
     print(f"[Test] Loss: {test_loss:.4f}, Accuracy: {test_accuracy:.4f}")
 
     # Save model 
-    model_dir = '../models'
-    os.makedirs(model_dir, exist_ok=True)
-    model_path = os.path.join(model_dir, 'B1_model.pkl')
+    model_path = "models/question_6.pkl"
+    os.makedirs(os.path.dirname(model_path), exist_ok=True)  # Ensure directory exists
     joblib.dump(final_model, model_path)
     print(f"Model saved to {model_path}")
-
     # # EXAMPLE OF PREDICTION
 
     # new_data_file='data/processed/banking_marketing_test_processed.csv'
