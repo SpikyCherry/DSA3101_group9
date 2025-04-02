@@ -59,10 +59,11 @@ python data/bank_marketing_data_preprocess.py --output ./data/processed/
 ## 3. Data Folder Structure
 ```
 data/
-├── raw/                      # Manually downloaded Kaggle datasets
-├── processed/                # Preprocessed datasets saved by question_x/preprocess.py
-├── bank_marketing_data_preprocess.py  # Script to create synthetic data
-└── data_dictionary.md        # Description of all variables in datasets
+├── raw/                               # Manually downloaded Kaggle datasets
+├── processed/                         # Preprocessed datasets saved by question_x/preprocess.py
+├── bank_marketing_data_preprocess.py  # Script to create synthetic data # script to preprocess the dataset
+├── data_dictionary.md                 # Description of all variables in datasets
+└── data_instructions.md               # Instructions on how to download, synthesize and preprocess data 
 ```
 
 ---
