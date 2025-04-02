@@ -19,10 +19,7 @@ A team of 10 data scientists collaborated to explore various supervised and unsu
 │
 ├── utils/                        # Shared functions (e.g., encoding)
 │
-├── models/
-│   ├── question_1/               # Trained models saved per question
-│   ├── question_2/
-│   └── ...
+├── models/                       # Trained models saved per question
 │
 ├── EDA/                          # Exploratory notebooks for global understanding
 │
