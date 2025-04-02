@@ -21,16 +21,6 @@ def prepare_data(file_path):
     num_features = ['age', 'duration', 'campaign', 'pdays', 'previous']
     df = data_cleaning.scale_features(df, num_features)
 
-
-    # Binning Age into categories
-    age_bins = [0, 18, 30, 40, 50, 60, 100]  # Added 0 as minimum
-    age_labels = [0, 1, 2, 3, 4, 5]  # Added 0 for <18 if needed
-
-    df['age_bin'] = pd.cut(df['age'], 
-                        bins=age_bins, 
-                        labels=age_labels,
-                        include_lowest=True)
-
     # Frequency Encoding for 'job'
     job_freq = df['job'].value_counts(normalize=True)
     df['job_freq'] = df['job'].map(job_freq)
@@ -53,12 +43,6 @@ def prepare_data(file_path):
 
     df['pdays'] = df['pdays'].replace(999, np.nan)
 
-    df['risk_score'] = (
-        df['default'].apply(lambda x: 1 if x == 'yes' else 0) + 
-        df['housing'].apply(lambda x: 1 if x == 'yes' else 0) + 
-        df['loan'].apply(lambda x: 1 if x == 'yes' else 0)
-    )
-
     df_encoded = df.copy()
 
     df_scaled = data_cleaning.scale_features(df_encoded)
@@ -71,3 +55,10 @@ def prepare_data(file_path):
     print(f"Scaled data saved to {output_path_scaled}")
 
     return df_encoded, df_scaled
+
+current_dir = os.getcwd()
+parent_dir = os.path.dirname(current_dir)
+sys.path.append(parent_dir)
+
+full_path = os.path.join(parent_dir,  "data/raw/bank_customers_train.csv")
+df_encoded, df_scaled = prepare_data(full_path)
