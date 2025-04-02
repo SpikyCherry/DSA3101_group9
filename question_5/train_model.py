@@ -10,6 +10,7 @@ Original file is located at
 import os
 import sys
 import joblib
+import pandas as pd
 from preprocess import prepare_data,perform_clustering
 from sklearn.model_selection import train_test_split
 from sklearn.tree import DecisionTreeClassifier
@@ -19,60 +20,14 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
 # === Load preprocessed dataset ===
 data_path = 'data/processed/BankChurners_clustered.csv'
-df_scaled=prepare_data(data_path)
+df_scaled=pd.read_csv(data_path)
 X = df_scaled.drop(columns=['Cluster'])
 y = df_scaled['Cluster']
 
-"""Decision Tree"""
 
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
-
-dt = DecisionTreeClassifier(max_depth=3, random_state=42)
-dt.fit(X_train, y_train)
-y_pred = dt.predict(X_test)
-
-# Evaluate the model
-accuracy = accuracy_score(y_test, y_pred)
-print(f'Accuracy: {accuracy:.2f}')
-
-# Display a classification report
-print(classification_report(y_test, y_pred))
-
-# Save model
-model_dir = 'models/question_5'
-os.makedirs(model_dir, exist_ok=True)
-model_path = os.path.join(model_dir, 'dt.pkl')
-
-joblib.dump(dt, model_path)
-print(f"Model saved to {model_path}")
-
-"""Random Forest"""
-
-rf = RandomForestClassifier(n_estimators=100, random_state=42)
-rf.fit(X_train, y_train)
-
-# Make predictions
-y_pred = rf.predict(X_test)
-
-# Evaluate the model
-accuracy = accuracy_score(y_test, y_pred)
-print(f'Accuracy: {accuracy:.2f}')
-
-# Display a classification report
-print(classification_report(y_test, y_pred))
-
-# Save model
-model_dir = 'models/question_5'
-os.makedirs(model_dir, exist_ok=True)
-model_path = os.path.join(model_dir, 'rf.pkl')
-
-joblib.dump(rf, model_path)
-print(f"Model saved to {model_path}")
-
-"""XGBoost"""
-
+"""The best model: XGBoost"""
 from xgboost import XGBClassifier
-
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 xgb = XGBClassifier(n_estimators=100, learning_rate=0.1)
 xgb.fit(X_train, y_train)
 y_pred = xgb.predict(X_test)
