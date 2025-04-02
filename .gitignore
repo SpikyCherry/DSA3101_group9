@@ -1,6 +1,6 @@
 data/raw/*
 data/processed/*
-models/
+models/*
 
 __pycache__/
 
