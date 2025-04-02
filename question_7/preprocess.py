@@ -15,6 +15,12 @@ from imblearn.over_sampling import SMOTE
 df = banking_marketing_train_encoded.copy()
 
 # --------------------------------------------
+# Duplicate the original binary 'y' column to 'conversion_binary'
+# --------------------------------------------
+df['conversion_binary'] = df['y']  # Duplicate 'y' column to 'conversion_binary'
+# Do not touch 'conversion_binary' throughout the classifier
+
+# --------------------------------------------
 # Customer Segmentation
 # --------------------------------------------
 
