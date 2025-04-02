@@ -5,40 +5,22 @@ import torch.nn as nn
 import torch.optim as optim
 import torch.nn.functional as F
 from collections import deque
-from DSA3101_group9.data.subB_data_preprocessing import banking_marketing_train_encoded, banking_marketing_test_encoded
-from sklearn.preprocessing import StandardScaler
+from preprocess import banking_marketing_train_encoded, banking_marketing_test_encoded
 
-
+# import data
 banking_marketing_train_rl = banking_marketing_train_encoded
 banking_marketing_test_rl = banking_marketing_test_encoded
 
-# # Initialize the scaler
-# scaler = StandardScaler()
-
-# # Standardize the training data
-# xtrain = scaler.fit_transform(banking_marketing_train_rl.drop(columns=['y']))
-
-# # Do not standardize the target variable
-# ytrain = banking_marketing_train_rl['y'].values
-
-# # Standardize the test data using the parameters from the training set
-# xtest = scaler.transform(banking_marketing_test_rl.drop(columns=['y']))
-
-# # Do not standardize the target variable in the test set
-# ytest = banking_marketing_test_rl['y'].values
+# remove columns with string
+columns_to_drop_for_rl = ['best_contact_time'] 
+banking_marketing_train_rl = banking_marketing_train_rl.drop(columns = columns_to_drop_for_rl)
+banking_marketing_test_rl = banking_marketing_test_rl.drop(columns = columns_to_drop_for_rl)
 
 # define
 xtrain = banking_marketing_train_rl.drop(columns=['y'])
 ytrain = banking_marketing_train_rl['y'].values
 xtest = banking_marketing_test_rl.drop(columns=['y'])
 ytest = banking_marketing_test_rl['y'].values
-
-# Extract feature names for later use
-features = banking_marketing_train_rl.drop(columns=['y']).columns
-
-# extract index of certain columns
-clv_index = features.index('CLV')
-cost_index = features.index('cost')
 
 # Target variable (no need to standardize)
 target = ['y']
@@ -104,6 +86,8 @@ class DQNAgent:
         states, actions, rewards, next_states = zip(*batch)
 
         states_tensor = torch.FloatTensor(states)
+        # states_array = np.array(states, dtype=np.float32)  # Ensure it's a NumPy array of floats
+        # states_tensor = torch.tensor(states_array)  # Convert to tensor
         actions_tensor = torch.LongTensor(actions).unsqueeze(1)
         rewards_tensor = torch.FloatTensor(rewards)
         next_states_tensor = torch.FloatTensor(next_states)
@@ -137,7 +121,6 @@ def calculate_strategy_based_retention_rate(action):
 
 # Define strategies and costs
 strategies = {0: 'Broad', 1: 'Group-Based', 2: 'AI-Based'} # Broad, Group-Based, AI-Based
-# costs = {0: 1, 1: 1.84, 2: 3} # personalisation cost
 retention_rates = {0: 0.3, 1: 0.6, 2: 0.9}
 campaign_rewards = {0: 50, 1: 55, 2: 60}
 
@@ -160,19 +143,17 @@ for campaign in range(num_campaigns):
     np.random.shuffle(indices)  # Shuffle training order
 
     for idx in indices:
-        customer = xtrain[idx]
+        customer = xtrain.iloc[idx]
         state = get_state(customer)
 
         action = agent.select_action(state) if np.random.rand() > epsilon else np.random.choice(list(strategies.keys()))
         
         # cost = costs[action]
-        cost = customer[cost_index] # cost column
-        # cost = customer['cost']
+        cost = customer['cost']
         retention_rate = calculate_strategy_based_retention_rate(action)
 
         conversion = ytrain[idx]
-        clv = customer[clv_index] if conversion else 0 # CLV column
-        # clv = customer['CLV'] if conversion else 0 # CLV column
+        clv = customer['CLV'] if conversion else 0 # CLV column
 
         reward = calculate_reward(conversion, cost, retention_rate, clv, budget)
         budget -= cost
@@ -181,7 +162,7 @@ for campaign in range(num_campaigns):
         if budget <= 0:
             break
 
-        next_state = get_state(xtrain[np.random.randint(len(xtrain))])  # Random next state
+        next_state = get_state(xtrain.iloc[np.random.randint(len(xtrain))])  # Random next state
         agent.memory.add((state, action, reward, next_state))
         agent.train()
 
@@ -193,7 +174,8 @@ for campaign in range(num_campaigns):
 
 # Select best strategy
 best_strategy = max(total_rewards, key=total_rewards.get)
-print(f"\n✅ Final Recommended Strategy after {num_campaigns} campaigns: {strategies[best_strategy]}")
+print('\nTRAIN RESULT:')
+print(f"✅ Final Recommended Strategy after {num_campaigns} campaigns: {strategies[best_strategy]}")
 
 
 
@@ -204,7 +186,7 @@ test_rewards = {0: 0, 1: 0, 2: 0}  # Track total rewards for each strategy
 
 # Run evaluation on test data
 for idx in range(len(xtest)):  # Iterate over the test data
-    customer = xtest[idx]  # Get customer data from the test set
+    customer = xtest.iloc[idx]  # Get customer data from the test set
     state = get_state(customer)  # Extract the state representation
 
     # **Use the trained model to select the best action**
@@ -212,22 +194,19 @@ for idx in range(len(xtest)):  # Iterate over the test data
 
     # Get cost, retention rate, and other necessary info for the selected action
     # cost = costs[action]
-    cost = customer[cost_index]
-    # cost = customer['cost']
+    cost = customer['cost']
     retention_rate = retention_rates[action]
 
     # Get actual conversion rate from ytest
     conversion = ytest[idx]  # Test data labels (converted or not)
-    clv = customer[clv_index] if conversion else 0  # CLV is 0 if not converted
-    # clv = customer['CLV'] if conversion else 0 # CLV column
-
+    clv = customer['CLV'] if conversion else 0 # CLV column
 
     # Calculate reward based on conversion, cost, retention, and CLV
     reward = calculate_reward(conversion, cost, retention_rate, clv, budget_left=0)  # Assuming no budget for simplicity
     test_rewards[action] += reward  # Accumulate rewards for each strategy
 
 # Print the final evaluation metrics
-print("Evaluation on Test Data:")
+print("\n Evaluation on Test Data:")
 for action in strategies.keys():
     print(f"Strategy {strategies[action]}: Total Reward = {test_rewards[action]}")
 
