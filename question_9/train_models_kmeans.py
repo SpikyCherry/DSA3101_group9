@@ -1,10 +1,19 @@
-from preprocess import banking_marketing_train_encoded, banking_marketing_test_encoded
 import pandas as pd
 import numpy as np
 from sklearn.cluster import KMeans
 from sklearn.decomposition import PCA
 import seaborn as sns
 import matplotlib.pyplot as plt
+import os
+import sys
+
+# import data
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+
+banking_marketing_train_encoded = pd.read_csv('data/processed/banking_marketing_train_processed.csv', delimiter=';', quotechar='"', encoding='utf-8')
+banking_marketing_test_encoded = pd.read_csv('data/processed/banking_marketing_test_processed.csv', delimiter=';', quotechar='"', encoding='utf-8')
+
+print(banking_marketing_train_encoded.head())
 
 banking_marketing_train_clustered = banking_marketing_train_encoded
 banking_marketing_test_clustered = banking_marketing_test_encoded
